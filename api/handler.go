@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backend/models"
+	"github.com/zmohamed6991/movies-app-backend/model"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -9,6 +9,9 @@ import (
 )
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
+
+	w.Write([]byte("Welcome to Movflix"))
+
 	var payload = struct {
 		Status string `json:"status"`
 		Message string `json:"message"`
@@ -33,11 +36,11 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) allMovies(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println(w, "List of movies")
-	
-	var movies []models.Movies
+	w.Write([]byte("List of movies"))
 
-	ThinkLikeAMan := models.Movies{
+	var movies []model.Movies
+
+	ThinkLikeAMan := model.Movies{
 		ID: 1,
 		Title: "Think like a man",
 		ReleaseDate: 2012,
@@ -60,7 +63,7 @@ func (app *application) allMovies(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write(response)
 
-	bmh := models.Movies{
+	bmh := model.Movies{
 		ID: 2,
 		Title: "Big Momma House 2",
 		ReleaseDate: 2006,
@@ -82,8 +85,6 @@ func (app *application) allMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(response)
-
-
 
 	
 }
