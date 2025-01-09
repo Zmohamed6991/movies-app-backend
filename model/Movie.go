@@ -12,6 +12,7 @@ type Movies struct {
     RunningTime int `json:"running_time"`
     Rating int `json:"rating"`
     Description string `json:"description"`
+    Image string `json:"image"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
 

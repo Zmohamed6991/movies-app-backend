@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"log"
 
-	_"github.com/jackc/pgx/pgconn"
-	_"github.com/jackc/pgx/v5"
-	_"github.com/jackc/pgx/v5/stdlib"
+	//"github.com/jackc/pgx/pgconn"
+	//"github.com/jackc/pgx/v5"
+	//"github.com/jackc/pgx/v5/stdlib"
 )
 
 func openDB(dsn string) (*sql.DB, error) {
