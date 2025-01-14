@@ -1,11 +1,16 @@
 package main
 
 import (
-
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	_"github.com/jackc/pgx/v5"
+	_"github.com/jackc/pgx/v5/stdlib"
+
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 	"github.com/zmohamed6991/movies-app-backend/repository"
 	"github.com/zmohamed6991/movies-app-backend/repository/dbrepo"
@@ -18,6 +23,18 @@ type application struct {
 	Domain string
 	DB repository.DatabaseRepo
 }
+
+func (app *application) routes() http.Handler {
+	mux := chi.NewRouter()
+	mux.Use(middleware.Recoverer)
+	mux.Use(app.enableCORS)
+
+	mux.Get("/", app.Home)
+	mux.Get("/movies", app.allMovies)
+
+	return mux
+}
+
 
 func main() {
 	// set up configuration
@@ -35,6 +52,7 @@ func main() {
 		dsn = "default_dsn"
 	}
 	fmt.Println("DSN:", dsn)
+
 
 	// connect to db
 	conn, err := app.connectToDB()
@@ -56,4 +74,33 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+
+
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("pgx", dsn)
+		if err != nil {
+			return nil, err
+		}
+
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+	
+	return db, nil
+}
+
+func (app *application) connectToDB() (*sql.DB, error) {
+
+	connection, err := openDB(app.DSN)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Println("connected to Postgres")
+
+	return connection, nil
+
 }
