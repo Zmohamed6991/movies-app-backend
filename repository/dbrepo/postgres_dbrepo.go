@@ -12,6 +12,10 @@ type PostgresDBRepo struct {
 
 }
 
+func (m *PostgresDBRepo) Connection() *sql.DB {
+    return m.DB
+}
+
 const dbTimeout = time.Second * 3
 
 func (m *PostgresDBRepo) AllMovies() ([]*model.Movies,error) {

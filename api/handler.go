@@ -9,20 +9,12 @@ import (
 )
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
-
-	w.Write([]byte("Welcome to Movflix"))
-
-	var payload = struct {
-		Status string `json:"status"`
-		Message string `json:"message"`
-		Version string `json:"version"`
-	}{
-		Status: "Active",
-		Message: "Movflix is running",
-		Version: "1.0",
+	movies, err := app.DB.AllMovies()
+	if err != nil {
+		fmt.Println(nil)
 	}
 
-	response, err := json.Marshal(payload)
+	response, err := json.Marshal(movies)
 	if err != nil {
 		fmt.Println(err)
 	}
