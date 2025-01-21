@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	_"github.com/jackc/pgx/v5"
 	_"github.com/jackc/pgx/v5/stdlib"
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/joho/godotenv"
+	"flag"
 	"github.com/zmohamed6991/movies-app-backend/repository"
 	"github.com/zmohamed6991/movies-app-backend/repository/dbrepo"
 )
@@ -41,18 +40,8 @@ func main() {
 	var app application
 
 	// need to load env file
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Println("error loading .env file")
-		return
-	}
-	// get the variable
-	dsn := os.Getenv("DSN")
-	if dsn == "" {
-		dsn = "default_dsn"
-	}
-	fmt.Println("DSN:", dsn)
-
+	flag.StringVar(&app.DSN, "dsn", "user=postgres password=postgres dbname=movies host=localhost port=5432 sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
+	flag.Parse()
 
 	// connect to db
 	conn, err := app.connectToDB()
