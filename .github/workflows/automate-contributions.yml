@@ -1,0 +1,30 @@
+name: Automate Contributions
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.x'
+
+      - name: Run Go Script
+        run: go run update_readme.go
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.name "Zmohamed6991"
+          git config --local user.email "zmohamed6991@gmail.com"
+          git add README.md
+          git commit -m "Automated update: $(date)"
+          git push
